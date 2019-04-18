@@ -38,6 +38,39 @@ spec:
       - name: {{ $daemonset }}
         image: {{ .Values.images.divingbell }}
         imagePullPolicy: {{ .Values.images.pull_policy }}
+        securityContext:
+          runAsUser: 65534
+          capabilities:
+            add:
+              - 'CHOWN'
+              - 'DAC_OVERRIDE'
+              - 'DAC_READ_SEARCH'
+              - 'FOWNER'
+              - 'FSETID'
+              - 'KILL'
+              - 'SETGID'
+              - 'SETUID'
+              - 'SETPCAP'
+              - 'LINUX_IMMUTABLE'
+              - 'NET_BIND_SERVICE'
+              - 'NET_BROADCAST'
+              - 'NET_ADMIN'
+              - 'NET_RAW'
+              - 'IPC_LOCK'
+              - 'IPC_OWNER'
+              - 'SYS_MODULE'
+              - 'SYS_RAWIO'
+              - 'SYS_CHROOT'
+              - 'SYS_PTRACE'
+              - 'SYS_PACCT'
+              - 'SYS_ADMIN'
+              - 'SYS_BOOT'
+              - 'SYS_NICE'
+              - 'SYS_RESOURCE'
+              - 'SYS_TIME'
+              - 'SYS_TTY_CONFIG'
+              - 'MKNOD'
+              - 'LEASE'
 {{ tuple $envAll $envAll.Values.pod.resources.apt | include "helm-toolkit.snippets.kubernetes_resources" | indent 8 }}
         command:
         - /tmp/{{ $daemonset }}.sh
